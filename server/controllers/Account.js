@@ -21,7 +21,7 @@ const login = (request, response) => {
   // Reassign passed in params
   const req = request;
   const res = response;
-    
+
   // Cast to string to help with security flaws
   const username = `${req.body.username}`;
   const password = `${req.body.pass}`;
