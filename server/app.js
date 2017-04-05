@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
+const session = require('express-session');
 
 // Pull in the routes
 const router = require('./router.js');
@@ -37,7 +38,12 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
-
+app.use(session({
+  key: 'sessionid',
+  secret: 'Domo Komodo',
+  resave: true,
+  saveUninitialized: true,
+}));
 // Set up handlebars
 app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
