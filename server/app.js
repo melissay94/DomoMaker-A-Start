@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
 const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const url = require('url');
+const csrf = require('csurf');
 
 // Pull in the routes
 const router = require('./router.js');
@@ -26,6 +29,18 @@ mongoose.connect(dbURL, (err) => {
   }
 });
 
+// Set up username and password for connecting to Redis
+let redisURL = {
+  hostname: 'localhost',
+  port: 6379,
+};
+
+let redisPass;
+
+if (process.env.REDISCLOUD_URL) {
+  redisURL = url.parse(process.env.REDISCLOUD_URL);
+  redisPass = redisURL.auth.split(';')[1];
+}
 
 // Set up the app using express
 const app = express();
@@ -40,14 +55,33 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(session({
   key: 'sessionid',
+  store: new RedisStore({
+    host: redisURL.hostname,
+    port: redisURL.port,
+    pass: redisPass,
+  }),
   secret: 'Domo Komodo',
   resave: true,
   saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+  },
 }));
+app.use(csrf());
+app.use((err, req, res, next) => {
+  if (err.code !== 'EBADCSRFTOKEN') { return next(err); }
+
+  console.log('Missing CSRF token');
+  return false;
+});
+
 // Set up handlebars
 app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/../views`);
+
+// Disable header so users can't see what our server is running
+app.disable('x-powered-by');
 
 // Use the route for the app
 router(app);
