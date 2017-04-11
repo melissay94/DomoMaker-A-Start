@@ -8,8 +8,11 @@
   "description": "A Simple Login Example using Node.js, Mongo and Redis",
   "main": "./server/app.js",
   "scripts": {
-    "build": "babel ./client --out-file ./hosted/bundle.js",
-    "watch": "babel --watch ./client --out-file ./hosted/bundle.js",
+    "buildLoginBundle": "babel ./client/login ./client/helper --presets react --out file ./hosted/loginBundle.js",
+    "buildAppBundle": "babel ./client/app ./client/helper --presets react --out-file ./hosted/bundle.js",
+    "build": "npm run buildLoginBundle && npm run buildAppBundle",
+    "watchLoginBundle": "babel --watch ./client/login ./client/helper --presets react --out-file ./hosted/loginBundle.js",
+    "watchAppBundle": "babel --watch ./client/app ./client/helper --presets react --out-file ./hosted/bundle.js",
     "nodemon": "nodemon --watch ./server ./server/app.js",
     "start": "node ./server/app.js",
     "pretest": "eslint ./server --fix",
@@ -24,6 +27,7 @@
   "author": "Cody Van De Mark",
   "license": "Apache 2.0",
   "dependencies": {
+    "babel-preset-react": "^6.24.1",
     "body-parser": "^1.15.0",
     "compression": "^1.6.1",
     "connect-redis": "^3.0.2",
