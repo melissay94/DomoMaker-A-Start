@@ -1,7 +1,9 @@
 let domoRenderer;
 let domoForm;
+let domoUser;
 let DomoFormClass;
 let DomoListClass;
+let DomoUserClass;
 
 const handleDomo = (e) => {
 	e.preventDefault();
@@ -20,6 +22,12 @@ const handleDomo = (e) => {
 	return false;
 };
 
+const renderUser = function() {
+	return (
+		<h3 className="userName">User has {this.state.data.length} domos made</h3>
+	);
+};
+
 const renderDomo = function() {
 
 	return (
@@ -34,6 +42,8 @@ const renderDomo = function() {
 			<input id="domoName" type="text" name="name" placeholder="Domo Name" />
 			<label htmlFor="age">Age: </label>
 			<input id="domoAge" type="text" name="age" placeholder="Domo Age" />
+			<label htmlFor="color"> Favorite Color: </label>
+			<input id-"domoColor" type="text" name="color" placeholder="Domo Favorite Color" />
 			<input type="hidden" name="_csrf" value={this.props.csrf} />
 			<input className="makeDomoSubmit" type="submit" value="Make Domo" />
 		</form>
@@ -56,6 +66,7 @@ const renderDomoList = function() {
 				<img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
 				<h3 className="domoName">Name: {domo.name} </h3>
 				<h3 className="domoAge">Age: {domo.age} </h3>
+				<h3 className="domoColor">Favorite Color: {domo.color} </h3>
 		);	</div>
 	});
 
@@ -85,7 +96,11 @@ const setup = function(csrf) {
 		componentDidMount: function() {
 			this.loadDomosFromServer();
 		},
-		render: renderDomoList
+		render: renderDomoList,
+	});
+
+	DomoUserClass = React.createClass({
+		render: renderUser,
 	});
 
 	domoForm = ReactDOM.render(
@@ -94,6 +109,10 @@ const setup = function(csrf) {
 
 	domoRenderer = ReactDOM.render(
 		<DomoListClass />, document.querySelector("#domos")
+	);
+
+	domoUser = ReactDOM.render(
+		<DomoUserClass />, document.querySelector("#user")
 	);
 };
 
