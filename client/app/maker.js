@@ -63,5 +63,46 @@ const renderDomoList = function() {
 		<div className="domoList">
 			{domoNodes}
 		</div>
-		)
+	);
 };
+
+const setup = function(csrf) {
+
+	DomoFormClass = React.createClass({
+		handleSubmit: handleDomo,
+		render: renderDomo,
+	});
+
+	DomoListClass = React.createClass({
+		loadDomosFromServer: function() {
+			sendAjax('GET', '/getDomos', null, function(data) {
+				this.setState({data: data.domos});
+			}.bind(this));
+		},
+		getInitialState: function() {
+			return {data: []};
+		},
+		componentDidMount: function() {
+			this.loadDomosFromServer();
+		},
+		render: renderDomoList
+	});
+
+	domoForm = ReactDOM.render(
+		<DomoFormClass csrf={csrf} />, document.querySelector("#makeDomo")	
+	);
+
+	domoRenderer = ReactDOM.render(
+		<DomoListClass />, document.querySelector("#domos")
+	);
+};
+
+const getToken = () => {
+	sendAjax('GET', '/getToken', null, (result) => {
+		setup(result.csrfToken);
+	});
+}
+
+$(document).ready(function() {
+	getToken();
+});

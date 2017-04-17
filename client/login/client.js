@@ -27,7 +27,7 @@ const handleSignup = (e) => {
 
 	if($("#pass").val() !== $("#pass2").val()) {
 		handleError("Rawr, your passwords don't match");
-		retun false;
+		return false;
 	}
 
 	sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect);

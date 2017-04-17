@@ -35,11 +35,11 @@ let redisURL = {
   port: 6379,
 };
 
-let redisPass;
+let redisPASS;
 
 if (process.env.REDISCLOUD_URL) {
   redisURL = url.parse(process.env.REDISCLOUD_URL);
-  redisPass = redisURL.auth.split(';')[1];
+  redisPASS = redisURL.auth.split(';')[1];
 }
 
 // Set up the app using express
@@ -58,7 +58,7 @@ app.use(session({
   store: new RedisStore({
     host: redisURL.hostname,
     port: redisURL.port,
-    pass: redisPass,
+    pass: redisPASS,
   }),
   secret: 'Domo Komodo',
   resave: true,

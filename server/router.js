@@ -1,6 +1,6 @@
 // Set up route to controllers
 const controllers = require('./controllers');
-const mid = require('../middleware');
+const mid = require('./middleware');
 
 // Set up the route for the app in app.js
 // Connect all our routes for the different necessary controllers
