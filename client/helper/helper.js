@@ -8,7 +8,7 @@ const redirect = (response) => {
 	window.location = response.redirect;
 };
 
-const sendAJAX = (type, action, data, success) => {
+const sendAjax = (type, action, data, success) => {
 	$.ajax({
 		cache: false, 
 		type: type, 

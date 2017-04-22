@@ -45,7 +45,7 @@ var renderLogin = function renderLogin() {
 			onSubmit: this.handleSubmit,
 			action: "/login",
 			method: "POST",
-			classname: "mainForm"
+			className: "mainForm"
 		},
 		React.createElement(
 			"label",
@@ -161,7 +161,7 @@ var redirect = function redirect(response) {
 	window.location = response.redirect;
 };
 
-var sendAJAX = function sendAJAX(type, action, data, success) {
+var sendAjax = function sendAjax(type, action, data, success) {
 	$.ajax({
 		cache: false,
 		type: type,

@@ -42,7 +42,7 @@ const renderLogin = function() {
 			onSubmit={this.handleSubmit}
 			action="/login"
 			method="POST"
-			classname="mainForm"
+			className="mainForm"
 		>
 			<label htmlFor="username">Username: </label>
 			<input id="user" type="text" name="username" placeholder="username" />
