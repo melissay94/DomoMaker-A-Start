@@ -45,11 +45,9 @@ if (process.env.REDISCLOUD_URL) {
 // Set up the app using express
 const app = express();
 
-// Set up all the paths, resources, and libraries the app will need
 app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
 app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
 app.use(compression());
-app.use(cookieParser());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
@@ -60,31 +58,29 @@ app.use(session({
     port: redisURL.port,
     pass: redisPASS,
   }),
-  secret: 'Domo Komodo',
+  secret: 'Domo Arigato',
   resave: true,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
   },
 }));
-app.use(csrf());
-app.use((err, req, res, next) => {
-  if (err.code !== 'EBADCSRFTOKEN') { return next(err); }
-
-  console.log('Missing CSRF token');
-  return false;
-});
-
-// Set up handlebars
 app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/../views`);
-
-// Disable header so users can't see what our server is running
 app.disable('x-powered-by');
+app.use(cookieParser());
 
-// Use the route for the app
+app.use(csrf());
+app.use((err, req, res, next) => {
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
+
+  console.log('Missing CSRF Token');
+  return false;
+});
+
 router(app);
+
 
 // Set up the app to listen for the port type
 app.listen(port, (err) => {
