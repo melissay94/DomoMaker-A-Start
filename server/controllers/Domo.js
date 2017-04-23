@@ -31,7 +31,7 @@ const makeDomo = (req, res) => {
 
   domoPromise.then(() => res.json({
     redirect: '/maker',
-  }));
+  })); 
 
   domoPromise.catch((err) => {
     console.log(err);

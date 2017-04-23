@@ -20,7 +20,7 @@ const handleSignup = (e) => {
 
 	$("#domoMessage").animate({width:'hide'}, 350);
 
-	if($("#user").val() == '' || $("#pass").val() || $("#pass2").val() == '') {
+	if($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
 		handleError("Rawr, you need to fill out all fields");
 		return false;
 	}
